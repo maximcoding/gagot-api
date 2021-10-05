@@ -1,0 +1,56 @@
+version: "3.7"
+
+# usage:
+# sudo docker-compose build -d
+# sudo docker-compose up -d
+
+services:
+  mongo:
+    container_name: terminal-app-mongo-dev
+    image: mongo:4.2
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_DATABASE=auth
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    networks:
+      - terminal-app-network
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data:/data/db
+
+  mongo-express:
+    container_name: terminal-app-mongo-express
+    image: mongo-express
+    depends_on:
+      - mongo
+    networks:
+      - terminal-app-network
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo-dev
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=tribes
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./data:/data/db
+
+  redis:
+    container_name: terminal-app-redis
+    image: "redis:alpine"
+    command: redis-server --requirepass redis123
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - terminal-app-network
+    volumes:
+      - ./redis-data:/data
+
+networks:
+  terminal-app-network:
+    driver: bridge
+
