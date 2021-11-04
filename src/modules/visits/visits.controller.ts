@@ -9,9 +9,10 @@ import {VisitsService} from './visits.service';
 import {IVisit} from './visit.schema';
 import {CreateVisitPayload} from './payloads/create-visit.payload';
 import {UpdateVisitPayload} from './payloads/update-visit-payload';
+import {RolesGuard} from '../auth/guards/roles.guard';
 
 @ApiTags('Visits')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller(ModelEnum.Visits)
 export class VisitsController {

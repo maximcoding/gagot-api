@@ -45,7 +45,7 @@ export interface IPropertyPreview {
   floors: number;
   price: any;
   currency: CurrencyEnum;
-  deposit: string;
+  deposit: number;
   categoryName?: CategoryEnum;
   rooms?: Room[]; // foreign key
   files?: IAwsFile[];
@@ -240,8 +240,8 @@ export class Property implements IProperty {
   })
   currency: CurrencyEnum;
 
-  @Prop({type: String})
-  deposit: string;
+  @Prop({type: Number})
+  deposit: number;
 
   @Factory(() => {
     const min = 0;

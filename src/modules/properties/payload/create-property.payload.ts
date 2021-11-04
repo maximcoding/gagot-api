@@ -77,11 +77,11 @@ export class CreatePropertyPayload implements IProperty {
   @ApiProperty({
     description: 'price with format 9999.999.99',
     type: String,
-    default: '0.00',
+    default: 0.0,
   })
+  @IsNumber()
   @IsNotEmpty()
-  @IsCurrency(currencyOptions)
-  price: string;
+  price: number;
 
   @ApiProperty({
     description: 'CurrencyEnum value',
@@ -109,12 +109,12 @@ export class CreatePropertyPayload implements IProperty {
   squareUnits: MeasurementEnum;
 
   @ApiProperty({
-    description: 'deposit in percentage',
-    default: '30%',
+    description: 'deposit in %',
+    default: 30,
     required: true,
   })
-  @ApiProperty({type: String})
-  deposit: string;
+  @ApiProperty({type: Number})
+  deposit: number;
 
   @ApiProperty({
     description: 'full address',

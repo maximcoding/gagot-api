@@ -47,28 +47,29 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
 
   @ApiProperty({
     description: 'price with format 9999.999.99',
-    type: String,
-    default: '0.00',
+    type: Number,
+    default: 0,
     required: true,
   })
   @IsNotEmpty()
-  @IsCurrency(currencyOptions)
-  priceMin: string;
+  @IsNumber()
+  priceMin: number;
 
   @ApiProperty({
     description: 'price with format 9999.999.99',
-    type: String,
-    default: '2500000.00',
+    type: Number,
+    default: 2500000,
     required: true,
   })
   @IsNotEmpty()
-  @IsCurrency(currencyOptions)
-  priceMax: string;
+  @IsNumber()
+  priceMax: number;
 
   @ApiProperty({
     type: Number,
     minimum: 0,
     maximum: 2000,
+    default: 0,
     required: false,
   })
   @IsNumber()
@@ -80,6 +81,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     type: Number,
     minimum: 1,
     maximum: 2000,
+    default: 2000,
     required: false,
   })
   @IsNumber()
@@ -128,6 +130,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     default: new Date('2020').toISOString(),
   })
   @IsDateString()
+  @IsOptional()
   publishedFromDate: Date;
 
   @ApiProperty({
@@ -137,6 +140,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     required: false,
   })
   @IsBoolean()
+  @IsOptional()
   newConstruction: boolean;
 
   @ApiProperty({
@@ -146,6 +150,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     required: false,
   })
   @IsBoolean()
+  @IsOptional()
   onTheLand: boolean;
 
   @ApiProperty({
@@ -153,6 +158,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     required: false,
   })
   @IsNumber()
+  @IsOptional()
   @Min(0)
   @Max(500)
   floors: number;
@@ -164,6 +170,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     enumName: 'NextToEnum',
     isArray: true,
   })
+  @IsOptional()
   @ArrayUnique()
   @IsEnum(NextToEnum, {each: true})
   @IsNotEmpty()
@@ -177,6 +184,7 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
     enum: CommonAmenitiesEnum,
     enumName: 'CommonAmenitiesEnum',
   })
+  @IsOptional()
   @IsNotEmpty()
   @ArrayUnique()
   @IsEnum(CommonAmenitiesEnum, {each: true})

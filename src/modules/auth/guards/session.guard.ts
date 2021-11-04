@@ -1,4 +1,5 @@
-import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '@nestjs/common';
+import {CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException} from '@nestjs/common';
+import {UserStatusEnum} from '../../../enums/user-status.enum';
 
 @Injectable()
 export class SessionAuthGuard implements CanActivate {
@@ -6,11 +7,16 @@ export class SessionAuthGuard implements CanActivate {
     const httpContext = context.switchToHttp();
     const request = httpContext.getRequest();
     try {
-      if (request.session.passport.user) {
-        return true;
+      const userStatus = request.session?.passport?.user.status;
+      if (userStatus === UserStatusEnum.active) {
+        return request.isAuthenticated();
+      } else if ([UserStatusEnum.disabled, UserStatusEnum.deleted, UserStatusEnum.banned].includes(userStatus)) {
+        throw new ForbiddenException('SessionAuthGuard', userStatus);
+      } else {
+        throw new UnauthorizedException();
       }
     } catch (e) {
-      throw new UnauthorizedException();
+      throw e;
     }
   }
 }

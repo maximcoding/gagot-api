@@ -42,6 +42,8 @@ import {AuthUser} from '../users/user.decorator';
 import {UserDocument} from '../users/schemas/user.schema';
 import {FilterPropertiesPayload} from './payload/filter-properties.payload';
 import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
+import {RolesGuard} from '../auth/guards/roles.guard';
+import {IUser} from '../users/interfaces/user.interface';
 
 const multerOptions = {limits: {fileSize: +process.env.APP_MAX_FILE_SIZE}};
 
@@ -55,6 +57,14 @@ export class PropertiesController {
   @Get('all')
   async findAll(@Query() payload: QueryPropertiesPayload): Promise<IFindAllPropertiesResponse> {
     return await this.service.findAll(payload);
+  }
+
+  @Get('me')
+  async findMine(
+    @AuthUser() user: IUser,
+    @Query() payload: QueryPropertiesPayload,
+  ): Promise<IFindAllPropertiesResponse> {
+    return await this.service.findAll(payload, {user: user._id});
   }
 
   @Post('all/filter')

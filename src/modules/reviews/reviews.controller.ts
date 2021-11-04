@@ -5,9 +5,10 @@ import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
 import {ObjectIdValidationPipe} from '../../helpers/object-id.validation.pipe';
 import {ReviewDocument} from './review.schema';
+import {RolesGuard} from '../auth/guards/roles.guard';
 
 @ApiTags('User Reviews')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller(ModelEnum.Reviews)
 export class ReviewsController {

@@ -111,22 +111,50 @@ export class PropertiesService {
   }
 
   async filterProperties(payload: FilterPropertiesPayload): Promise<IFindAllPropertiesResponse> {
-    return await this.findAll(payload, {
-      categoryName: {$in: payload.categoryName},
-      state: {$in: payload.state},
-      bedrooms: {$gte: payload.bedrooms},
-      bathrooms: {$gte: payload.bathrooms},
-      floors: {$gte: payload.floors},
-      newConstruction: payload.newConstruction,
-      onTheLand: payload.onTheLand,
-      nextTo: {$in: payload.nextTo},
-      amenities: {$in: payload.amenities},
-      facilities: {$in: payload.facilities},
-      safetyAmenities: {$in: payload.safetyAmenities},
-      // createdAt: {$gte: new Date(payload.publishedFromDate).toISOString()},
-      price: {$gte: parseInt(payload.priceMin), $lte: parseInt(payload.priceMax)},
-      square: {$gte: parseInt(payload.squareMin + ''), $lte: parseInt(payload.squareMax + '')},
-    });
+    const filter = {};
+    if (payload?.categoryName?.length) {
+      filter['categoryName'] = {$in: payload.categoryName};
+    }
+    if (payload?.state?.length) {
+      filter['state'] = {$in: payload.state};
+    }
+    if (payload?.bedrooms > 0) {
+      filter['bedrooms'] = {$gte: payload.bedrooms};
+    }
+    if (payload?.bathrooms > 0) {
+      filter['bathrooms'] = {$gte: payload.bathrooms};
+    }
+    if (payload?.floors > 0) {
+      filter['floors'] = {$gte: payload.floors};
+    }
+    if (payload?.newConstruction != null) {
+      filter['newConstruction'] = payload.newConstruction;
+    }
+    if (payload?.onTheLand != null) {
+      filter['onTheLand'] = payload.onTheLand;
+    }
+    if (payload?.nextTo?.length) {
+      filter['nextTo'] = {$in: payload.nextTo};
+    }
+    if (payload?.amenities?.length) {
+      filter['amenities'] = {$in: payload.amenities};
+    }
+    if (payload?.facilities?.length) {
+      filter['facilities'] = {$in: payload.facilities};
+    }
+    if (payload?.safetyAmenities?.length) {
+      filter['safetyAmenities'] = {$in: payload.safetyAmenities};
+    }
+    if (payload?.publishedFromDate) {
+      filter['createdAt'] = {$gte: new Date(payload.publishedFromDate).toISOString()};
+    }
+    if (payload?.priceMin >= 0 && payload.priceMax > payload.priceMin) {
+      filter['price'] = {$gte: payload.priceMin, $lte: payload.priceMax};
+    }
+    if (payload?.squareMin >= 0 && payload.squareMin > payload.squareMin) {
+      filter['square'] = {$gte: payload.squareMin, $lte: payload.squareMin};
+    }
+    return await this.findAll(payload, filter);
   }
 
   async findWithFilesById(id: string, attr: AppFileEnum): Promise<PropertyDocument> {

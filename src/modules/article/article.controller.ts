@@ -1,5 +1,5 @@
-import {Controller, Get, Post, Put, Delete, Body, Param, HttpCode, HttpStatus, UseGuards} from '@nestjs/common';
-import {ApiCreatedResponse, ApiOkResponse, ApiBearerAuth, ApiOperation, ApiTags} from '@nestjs/swagger';
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags} from '@nestjs/swagger';
 import {AuthGuard} from '@nestjs/passport';
 
 import {ArticleService} from './article.service';
@@ -8,6 +8,9 @@ import {ApiImplicitParam} from '@nestjs/swagger/dist/decorators/api-implicit-par
 import {Roles} from '../auth/decorators/roles.decorator';
 import {ApiImplicitHeader} from '@nestjs/swagger/dist/decorators/api-implicit-header.decorator';
 import {ModelEnum} from '../../enums/model.enum';
+import {RoleEnum} from '../../enums/role.enum';
+import {RolesGuard} from '../auth/guards/roles.guard';
+import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Articles')
 @Controller(ModelEnum.Articles)
@@ -33,8 +36,8 @@ export class ArticleController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(RoleEnum.Admin)
   @ApiOperation({description: 'Create one article'})
   @ApiImplicitHeader({
     name: 'Bearer',
@@ -47,8 +50,8 @@ export class ArticleController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(RoleEnum.Admin)
   @ApiOperation({description: 'Update one article by id ( all params )'})
   @ApiImplicitParam({name: 'id', description: 'id of article'})
   @ApiImplicitHeader({
@@ -62,8 +65,8 @@ export class ArticleController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(RoleEnum.Admin)
   @ApiOperation({description: 'Delete one article'})
   @ApiImplicitHeader({
     name: 'Bearer',

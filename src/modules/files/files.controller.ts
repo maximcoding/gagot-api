@@ -10,14 +10,12 @@ import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
 @ApiBearerAuth()
 @Controller(ModelEnum.Files)
 export class FilesController {
-  constructor(private service: FilesService) {
-  }
+  constructor(private service: FilesService) {}
 
   @Delete()
   async deleteMultipleFiles(@Body() ids: string[]): Promise<void> {
     await this.service.deletePublicFiles(ids);
   }
-
 
   @Delete(':id')
   async deleteFile(@Param('id', ObjectIdValidationPipe) id: string): Promise<void> {

@@ -5,9 +5,10 @@ import {ApiBearerAuth, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ComplainPayload} from '../payloads/complain.payload';
 import {ComplainDocument} from '../schemas/complain.schema';
 import {JwtAuthGuard} from '../../auth/guards/jwt-auth.guard';
+import {RolesGuard} from '../../auth/guards/roles.guard';
 
 @ApiTags('User Complains')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller(ModelEnum.Users + '/' + ModelEnum.Complains)
 export class UserComplainController {

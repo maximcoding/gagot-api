@@ -22,9 +22,10 @@ import {FileExtender} from '../files/file.extender.interceptor';
 import {FileInterceptor} from '@nestjs/platform-express';
 import {DeleteImagePayload} from '../properties/payload/query-property.payload';
 import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
+import {RolesGuard} from '../auth/guards/roles.guard';
 
 @ApiTags('Property Rooms')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller(ModelEnum.Rooms)
 export class RoomsController {

@@ -44,8 +44,8 @@ export class PatchPropertyPayload implements IProperty {
   @IsArray()
   coordinate: number[];
 
-  @ApiProperty({type: String})
-  deposit: string;
+  @ApiProperty({type: Number})
+  deposit: number;
 
   @ApiProperty({description: 'free text', type: String})
   @MinLength(2)

@@ -23,10 +23,11 @@ import {FileInterceptor} from '@nestjs/platform-express';
 import {JwtAuthGuard} from '../../auth/guards/jwt-auth.guard';
 import {ApiAvatarFile} from '../../files/api-file.decorator';
 import {UserDocument} from '../schemas/user.schema';
+import {RolesGuard} from '../../auth/guards/roles.guard';
 
 @ApiTags('Users')
 @Controller(ModelEnum.Users)
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @ApiCookieAuth()
 export class UserController {
