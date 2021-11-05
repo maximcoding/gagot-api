@@ -182,6 +182,10 @@ export class UserService {
     await this.userModel.deleteMany().exec();
   }
 
+  public async updateStatus(userId: string, status: UserStatusEnum) {
+    return this.userModel.findOneAndUpdate({id: userId}, {$set: {status}}).exec();
+  }
+
   // public async resetPassword(
   //   code,
   //   mobilePhone,

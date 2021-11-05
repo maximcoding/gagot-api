@@ -9,7 +9,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
+#ignore seeds
+/src/seeds/data/admin.data.ts
 # OS
 .DS_Store
 
@@ -32,4 +33,16 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.jsonsendgrid.env
+
+#ENV files
 .*.env
+.env
+.env.development
+
+#redis
+redis-data
+data
+
+dist
+ssl
+yarn.lock

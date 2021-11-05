@@ -13,14 +13,7 @@ import {EmailModule} from '../email/email.module';
 import {FilesModule} from '../files/files.module';
 import {APP_INTERCEPTOR} from '@nestjs/core';
 import {LoggingInterceptor} from '../../interceptors/logging.interceptor';
-
-let envFilePath = '.development.env';
-console.log(`Running in ${process.env.NODE_ENV}`);
-if (process.env.ENVIRONMENT === 'PRODUCTION') {
-  envFilePath = '.production.env';
-} else if (process.env.ENVIRONMENT === 'TEST') {
-  envFilePath = '.testing.env';
-}
+import {RedisCacheModule} from '../cache/redis-cache.module';
 
 @Module({
   controllers: [AppController],
@@ -37,12 +30,13 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     PropertiesModule,
     CategoriesModule,
     FilesModule,
+    RedisCacheModule,
     ThrottlerModule.forRoot({
       ttl: +process.env.TROTTLER_TTL,
       limit: +process.env.TROTTLER_LIMIT,
     }),
     ConfigModule.forRoot({
-      envFilePath,
+      envFilePath: ['.env.development', '.env'],
       expandVariables: true,
       isGlobal: true,
       cache: true,

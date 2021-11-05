@@ -36,6 +36,8 @@ import {SmsService} from '../sms/sms.service';
 import {EmailService} from '../email/email.service';
 import {UserDocument} from '../users/schemas/user.schema';
 import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
+import {CacheService} from '../cache/cache.service';
+import {UserStatusEnum} from '../../enums/user-status.enum';
 
 const KEY = 'hello';
 
@@ -53,6 +55,7 @@ export class AuthService {
     private smsService: SmsService,
     private emailService: EmailService,
     private configService: ConfigService,
+    private redisCache: CacheService,
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
 
@@ -69,6 +72,14 @@ export class AuthService {
       await this.emailService.sendEmailConfirmationCode(newUser, newUser.emailConfirmationCode);
     }
     return await newUser.save();
+  }
+
+  public async addToWhiteListToken(userId: string, jwtToken) {
+    await this.redisCache.whiteListJWTToken(userId, jwtToken);
+  }
+
+  public async blackListJWTToken(userId: string) {
+    await this.redisCache.blackListJWTToken(userId);
   }
 
   public async sendMobileVerificationCode(payload: MobileVerificationPayload): Promise<void> {
@@ -98,10 +109,13 @@ export class AuthService {
   }
 
   // working
-  public async loginWithPhone(mobilePhone: string, password: string): Promise<string> {
+  // working
+  public async loginWithPhone(mobilePhone: string, password: string): Promise<any> {
     const user = await this.userService.findVerifiedUserByPhone(mobilePhone);
     await this.checkPassword(password, user);
-    return this.createSignToken(user._id);
+    const jwtToken = this.createSignToken(user._id);
+    await this.addToWhiteListToken(user._id, jwtToken);
+    return {token: jwtToken};
   }
 
   // working
@@ -111,8 +125,9 @@ export class AuthService {
       throw new NotFoundException(`There isn't any user with mobile: ${payload.email}`);
     }
     await this.checkPassword(payload.password, user);
-    const token = this.createSignToken(user._id);
-    return {user, token};
+    const jwtToken = this.createSignToken(user._id);
+    await this.addToWhiteListToken(user._id, jwtToken);
+    return {token: jwtToken, user};
   }
 
   public async resetPasswordRequest(payload: ResetPasswordPayload): Promise<void> {
@@ -196,6 +211,12 @@ export class AuthService {
   async confirmResetPassThroughEmail(userId: string) {
     const user = await this.userService.findById(userId);
     return await this.userService.setUsersEmailConfirmed(user);
+  }
+
+  public async logout(user) {
+    await this.userService.updateStatus(user._id, UserStatusEnum.disabled);
+    await this.blackListJWTToken(user._id);
+    return ['Authentication=; HttpOnly; Path=/; Max-Age=0', 'Refresh=; HttpOnly; Path=/; Max-Age=0'];
   }
 
   // async refreshAccessToken(refreshAccessTokenDto: RefreshAccessTokenPayload) {

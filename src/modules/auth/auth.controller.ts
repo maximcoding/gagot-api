@@ -1,13 +1,5 @@
 import {Body, Controller, Get, Headers, HttpCode, HttpStatus, Post, Query, Req, Res, UseGuards} from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiCookieAuth,
-  ApiOkResponse,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiCookieAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {Request, Response} from 'express';
 import {LoginWithPhonePayload} from '../users/payloads/login.payloads';
 import {ConfirmEmailPayload} from '../users/payloads/confirm-email.payload';
@@ -22,6 +14,10 @@ import {
 import {JwtAuthGuard} from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
 import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
+import {AuthUser} from '../users/user.decorator';
+import {IUser} from '../users/interfaces/user.interface';
+import {SessionAuthGuard} from './guards/session.guard';
+import {RolesGuard} from './guards/roles.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -159,15 +155,18 @@ export class AuthController {
   }
 
   @Get('logout')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, SessionAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({description: 'Sign out from user account'})
-  async logout(@Req() req, @Res() res, @Headers() headers: Headers) {
-    res.header('Authorization', ``);
-    req.session = null;
-    res.redirect('/');
+  async logout(@AuthUser() user: IUser, @Req() req, @Res() res, @Headers() headers: Headers) {
+    const cookies = this.authService.logout(user);
+    req.session.destroy(() => {
+      req.res.setHeader('Set-Cookie', cookies);
+      req.logOut();
+      return res.redirect('/');
+    });
   }
 
   // @Post('refresh-access-token')

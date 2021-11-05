@@ -1,4 +1,4 @@
-import {forwardRef, Module} from '@nestjs/common';
+import {CacheModule, forwardRef, Module} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {JwtStrategy} from './strategies/jwt.strategy';
 import {PassportModule} from '@nestjs/passport';
@@ -12,6 +12,7 @@ import {SessionCookieSerializer} from './session-cookie-serializer.service';
 import {authProviders} from './auth.providers';
 import {SmsModule} from '../sms/sms.module';
 import {EmailModule} from '../email/email.module';
+import {RedisCacheModule} from '../cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -20,14 +21,15 @@ import {EmailModule} from '../email/email.module';
     SmsModule,
     EmailModule,
     DatabaseModule,
+    RedisCacheModule,
     PassportModule.register({session: true, defaultStrategy: 'jwt'}), // oidc
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async () => {
+      useFactory: async (configService: ConfigService) => {
         return {
-          secret: process.env.SECRET_KEY || 'secretKey',
+          secret: configService.get('SECRET_KEY') || 'secretKey',
           signOptions: {
-            expiresIn: process.env.JWT_SECRET_TOKEN_EXP,
+            expiresIn: configService.get('JWT_SECRET_TOKEN_EXP'),
             algorithm: 'HS384',
           },
           verifyOptions: {

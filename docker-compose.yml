@@ -6,51 +6,53 @@ version: "3.7"
 
 services:
   mongo:
-    container_name: terminal-app-mongo-dev
+    container_name: gagot-app-mongo-dev
     image: mongo:4.2
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_DATABASE=auth
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_ROOT_NAME}
+      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_ROOT_PASS}
     networks:
-      - terminal-app-network
+      - gagot-app-network
     ports:
       - '27017:27017'
     volumes:
       - ./data:/data/db
 
   mongo-express:
-    container_name: terminal-app-mongo-express
+    container_name: gagot-app-mongo-express
     image: mongo-express
     depends_on:
       - mongo
     networks:
-      - terminal-app-network
+      - gagot-app-network
     restart: unless-stopped
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo-dev
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=tribes
+
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_EXPRESS_ADMIN_USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_EXPRESS_ADMIN_PASS}
+
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_AUTH_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_AUTH_PASS}
     ports:
       - '8081:8081'
     volumes:
       - ./data:/data/db
 
   redis:
-    container_name: terminal-app-redis
+    container_name: gagot-app-redis
     image: "redis:alpine"
-    command: redis-server --requirepass redis123
+    command: redis-server --requirepass ${REDIS_PASS}
     restart: always
     ports:
-      - '6379:6379'
+      - ${REDIS_PORT_OUT}:${REDIS_PORT_IN}
     networks:
-      - terminal-app-network
+      - gagot-app-network
     volumes:
       - ./redis-data:/data
 
 networks:
-  terminal-app-network:
+  gagot-app-network:
     driver: bridge
 
