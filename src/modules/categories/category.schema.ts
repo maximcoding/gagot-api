@@ -2,6 +2,7 @@ import {CategoryEnum} from '../../enums/categoryEnum';
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document} from 'mongoose';
 import {CommonSchemaOptions} from '../../helpers/common-schema.options';
+import {Factory} from 'nestjs-seeder';
 
 export interface ICategory {
   _id?: string;
@@ -11,6 +12,7 @@ export interface ICategory {
 
 @Schema(CommonSchemaOptions)
 export class Category implements ICategory {
+  @Factory((faker, ctx) => `${ctx.name}`)
   @Prop({
     type: String,
     required: true,
@@ -19,6 +21,7 @@ export class Category implements ICategory {
   })
   name: CategoryEnum;
 
+  @Factory((faker, ctx) => `${ctx.photoUrl}`)
   @Prop({type: String, required: true})
   photoUrl: string;
 }

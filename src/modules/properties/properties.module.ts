@@ -10,6 +10,7 @@ import {RoomsService} from '../rooms/rooms.service';
 import {VisitsService} from '../visits/visits.service';
 import {VisitsController} from '../visits/visits.controller';
 import {UserModule} from '../users/user.module';
+import {SeederModule} from 'nestjs-seeder/dist/seeder/seeder.module';
 
 @Module({
   imports: [DatabaseModule, CategoriesModule, FilesModule, UserModule],

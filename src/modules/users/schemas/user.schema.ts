@@ -11,9 +11,10 @@ import {RoleEnum} from '../../../enums/role.enum';
 import {Exclude} from 'class-transformer';
 import {UserStatusEnum} from '../../../enums/user-status.enum';
 import {MeasurementEnum} from '../../../enums/measurement.enum';
-import {Property, PropertySchema} from '../../properties/property.schema';
+import {Property, PropertySchema} from '../../properties/propertySchema';
 import {ModelEnum} from '../../../enums/model.enum';
 import {AwsFile} from '../../files/aws-file.schema';
+import {hashPassword} from '../../../helpers/password-hash';
 
 export type UserDocument = User & Document;
 
@@ -214,7 +215,7 @@ UserSchema.pre('save', async function (next: mongoose.HookNextFunction) {
       return next();
     }
     // tslint:disable-next-line:no-string-literal
-    const hashed = await bcrypt.hash(this['password'], Number(process.env.BCRYPT_SALT || 10));
+    const hashed = hashPassword(this['password']);
     // tslint:disable-next-line:no-string-literal
     this['password'] = hashed;
     next();

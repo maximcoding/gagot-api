@@ -22,7 +22,7 @@ import {
   VideoFormat,
 } from './aws-file.schema';
 import {FILE_MODEL} from './files.providers';
-import {IProperty} from '../properties/property.schema';
+import {IProperty} from '../properties/propertySchema';
 
 const path = require('path');
 

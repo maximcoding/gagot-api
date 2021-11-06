@@ -38,6 +38,7 @@ import {UserDocument} from '../users/schemas/user.schema';
 import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
 import {CacheService} from '../cache/cache.service';
 import {UserStatusEnum} from '../../enums/user-status.enum';
+import {comparePass, create6DigitsCode} from '../../helpers/password-hash';
 
 const KEY = 'hello';
 
@@ -167,7 +168,7 @@ export class AuthService {
   }
 
   private setMobileVerificationCode(user: UserDocument): UserDocument {
-    user.mobilePhoneVerificationCode = this.create6DigitsCode();
+    user.mobilePhoneVerificationCode = create6DigitsCode();
     user.mobilePhoneVerificationExpires = addMinutes(new Date(), this.MINUTES_TO_VERIFY_MOBILE_PHONE);
     return user;
   }
@@ -176,10 +177,6 @@ export class AuthService {
     user.emailConfirmationCode = this.encryptText(user.email);
     user.emailConfirmationExpires = addHours(new Date(), this.HOURS_TO_VERIFY_EMAIL_ADDRESS);
     return user;
-  }
-
-  private create6DigitsCode(): number {
-    return Math.floor(100000 + Math.random() * 900000);
   }
 
   private createEmailResetToken(userId: string) {
@@ -284,7 +281,7 @@ export class AuthService {
     resetPass.userId = userId;
     const emailJwtToken = this.createEmailResetToken(userId);
     resetPass.emailToken = emailJwtToken;
-    resetPass.mobileSmsCode = this.create6DigitsCode();
+    resetPass.mobileSmsCode = create6DigitsCode();
     resetPass.mobileSmsCodeExpires = addMinutes(new Date(), this.MINUTES_TO_VERIFY_MOBILE_PHONE);
     return await resetPass.save();
   }
@@ -330,7 +327,7 @@ export class AuthService {
 
   private async checkPassword(attemptPass: string, user) {
     this.isUserBlocked(user);
-    const match = await bcrypt.compare(attemptPass, user.password);
+    const match = await comparePass(attemptPass, user.password);
     if (!match) {
       await this.countLoginAttempts(user);
       throw new NotFoundException({

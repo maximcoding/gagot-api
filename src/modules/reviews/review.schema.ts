@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose';
 import {Document, model, Model} from 'mongoose';
 import {IUser} from '../users/interfaces/user.interface';
-import {IProperty, Property} from '../properties/property.schema';
+import {IProperty, Property} from '../properties/propertySchema';
 import {CommonSchemaOptions} from '../../helpers/common-schema.options';
 import {ModelEnum} from '../../enums/model.enum';
 import {User} from '../users/schemas/user.schema';

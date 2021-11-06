@@ -1,6 +1,6 @@
 import {Model} from 'mongoose';
 import {BadRequestException, Inject, Injectable, NotFoundException} from '@nestjs/common';
-import {IProperty, PropertyDocument, PropertyStatus} from './property.schema';
+import {IProperty, PropertyDocument, PropertyStatus} from './propertySchema';
 import {PatchPropertyPayload} from './payload/patch-property.payload';
 import {ModelEnum} from '../../enums/model.enum';
 import {

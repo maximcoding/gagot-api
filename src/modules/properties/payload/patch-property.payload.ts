@@ -1,4 +1,4 @@
-import {CurrencyEnum, IProperty} from '../property.schema';
+import {CurrencyEnum, IProperty} from '../propertySchema';
 import {NextToEnum} from '../../../enums/nexto.num';
 import {CommonAmenitiesEnum, SafetyAmenitiesEnum} from '../../../enums/amenities.enum';
 import {PropertyState} from '../../../enums/propertyState';

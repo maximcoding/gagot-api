@@ -85,6 +85,7 @@ export type PropertyPreviewDocument = IPropertyPreview & Document;
 
 @Schema(CommonSchemaOptions)
 export class Property implements IProperty {
+  @Factory((faker) => faker.random.arrayElement(Object.values(PropertyState)))
   @Prop({
     type: [String],
     enum: Object.values(PropertyState),
@@ -92,6 +93,7 @@ export class Property implements IProperty {
   })
   state: PropertyState[];
 
+  @Factory((faker) => faker.address.streetAddress() + ',' + faker.address.city())
   @Prop({type: String})
   address: string;
 
@@ -177,7 +179,7 @@ export class Property implements IProperty {
   })
   amenities: CommonAmenitiesEnum[];
 
-  @Factory((faker) => faker.random.arrayElements(Object.values(SafetyAmenitiesEnum)))
+  @Factory((faker) => faker.random.arrayElement(Object.values(SafetyAmenitiesEnum)))
   @Prop({
     type: [String],
     enum: Object.values(SafetyAmenitiesEnum),
@@ -225,9 +227,19 @@ export class Property implements IProperty {
   })
   title: string;
 
+  @Factory(() => {
+    const min = 0;
+    const max = 20;
+    return Math.round(Math.random() * (min - max) + min);
+  })
   @Prop({type: Number})
   floors: number;
 
+  @Factory(() => {
+    const min = 1000;
+    const max = 20000000;
+    return Math.round(Math.random() * (min - max) + min);
+  })
   @Prop({
     type: Number,
   })
@@ -236,6 +248,7 @@ export class Property implements IProperty {
   @Prop({
     type: String,
     required: true,
+    default: CurrencyEnum.nis,
     enum: Object.values(CurrencyEnum),
   })
   currency: CurrencyEnum;
@@ -253,13 +266,18 @@ export class Property implements IProperty {
   })
   rating: number;
 
-  @Factory((faker) => faker.random.arrayElements(Object.values(FacilitiesEnum)))
+  @Factory((faker) => faker.random.arrayElement(Object.values(FacilitiesEnum)))
   @Prop({
     type: [String],
     enum: Object.values(FacilitiesEnum),
   })
   facilities: FacilitiesEnum[];
 
+  @Factory(() => {
+    const min = 1;
+    const max = 5;
+    return Math.round(Math.random() * (min - max) + min);
+  })
   @Prop({
     default: 0,
     type: Number,
@@ -310,6 +328,7 @@ export class Property implements IProperty {
   })
   parkingLots: number;
 
+  @Factory((faker) => faker.random.arrayElement(Object.values(CategoryEnum)))
   @Prop({
     type: String,
     required: true,

@@ -6,7 +6,7 @@ import {CommonSchemaOptions} from '../../helpers/common-schema.options';
 import {Document, Model, model} from 'mongoose';
 import {AwsFile} from '../files/aws-file.schema';
 import {BathEnum} from '../../enums/bath.enum';
-import {Property, PropertyDocument} from '../properties/property.schema';
+import {Property, PropertyDocument} from '../properties/propertySchema';
 
 export interface IRoom {
   type: RoomEnum;

@@ -1,6 +1,6 @@
 import {Connection} from 'mongoose';
 import {ModelEnum} from '../../enums/model.enum';
-import {PropertySchema} from './property.schema';
+import {PropertySchema} from './propertySchema';
 import {DATABASE_PROVIDER} from '../database/database.providers';
 import {RoomSchema} from '../rooms/room.schema';
 import {VisitSchema} from '../visits/visit.schema';

@@ -14,7 +14,7 @@ import {
 import {SortBy} from '../properties.service';
 import {PropertyState} from '../../../enums/propertyState';
 import {CategoryEnum} from '../../../enums/categoryEnum';
-import {PropertyStatus} from '../property.schema';
+import {PropertyStatus} from '../propertySchema';
 import {ApiProperty} from '@nestjs/swagger';
 import {AppFileEnum} from '../../files/aws-file.schema';
 import faker from 'faker';

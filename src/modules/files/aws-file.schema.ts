@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import {UserSchema} from '../users/schemas/user.schema';
 import {Room} from '../rooms/room.schema';
 import {ModelEnum} from '../../enums/model.enum';
-import {Property} from '../properties/property.schema';
+import {Property} from '../properties/propertySchema';
 
 export enum ImageFormat {
   jpeg = 'image/jpeg',

@@ -18,7 +18,7 @@ import {ModelEnum} from '../../enums/model.enum';
 import {PropertiesService} from './properties.service';
 import {CreatePropertyPayload} from './payload/create-property.payload';
 import {PatchPropertyPayload} from './payload/patch-property.payload';
-import {IProperty} from './property.schema';
+import {IProperty} from './propertySchema';
 import {ApiBearerAuth, ApiConsumes, ApiCreatedResponse, ApiTags} from '@nestjs/swagger';
 import {ObjectIdValidationPipe} from '../../helpers/object-id.validation.pipe';
 import {

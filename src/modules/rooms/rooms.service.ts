@@ -5,7 +5,7 @@ import {FilesService} from '../files/files.service';
 import {IRoom, RoomDocument} from './room.schema';
 import {AppFileEnum} from '../files/aws-file.schema';
 import {CreateRoomPayload} from './payloads/create-room.payload';
-import {PropertyDocument} from '../properties/property.schema';
+import {PropertyDocument} from '../properties/propertySchema';
 
 @Injectable()
 export class RoomsService {

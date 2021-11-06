@@ -1,5 +1,5 @@
 import {DayOfTheWeekEnum, IVisit} from '../visit.schema';
-import {IProperty} from '../../properties/property.schema';
+import {IProperty} from '../../properties/propertySchema';
 import {IUser} from '../../users/interfaces/user.interface';
 import {ApiProperty} from '@nestjs/swagger';
 import {IsArray, IsDate, IsDateString, IsMongoId, IsString} from 'class-validator';
