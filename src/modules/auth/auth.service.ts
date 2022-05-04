@@ -33,7 +33,7 @@ import * as bcrypt from 'bcrypt';
 import * as Cryptr from 'cryptr';
 import {RESET_PASS} from './auth.providers';
 import {SmsService} from '../sms/sms.service';
-import {EmailService} from '../email/email.service';
+import {SendgridService} from '../email/sendgrid.service';
 import {UserDocument} from '../users/schemas/user.schema';
 import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
 import {CacheService} from '../cache/cache.service';
@@ -54,7 +54,7 @@ export class AuthService {
     private readonly resetPassModel: Model<ResetPassword>,
     private readonly jwtService: JwtService,
     private smsService: SmsService,
-    private emailService: EmailService,
+    private emailService: SendgridService,
     private configService: ConfigService,
     private redisCache: CacheService,
     @Inject(forwardRef(() => UserService)) private userService: UserService,
@@ -68,10 +68,10 @@ export class AuthService {
       this.setMobileVerificationCode(newUser);
       await this.smsService.sendSMSCode(newUser.mobilePhone, newUser.mobilePhoneVerificationCode);
     }
-    if (newUser.email) {
-      this.setEmailConfirmationCode(newUser);
-      await this.emailService.sendEmailConfirmationCode(newUser, newUser.emailConfirmationCode);
-    }
+    // if (newUser.email) {
+    //   this.setEmailConfirmationCode(newUser);
+    //   await this.emailService.sendEmailConfirmationCode(newUser, newUser.emailConfirmationCode);
+    // }
     return await newUser.save();
   }
 

@@ -142,6 +142,9 @@ export class PropertiesService {
     if (payload?.facilities?.length) {
       filter['facilities'] = {$in: payload.facilities};
     }
+    if (payload?.kitchen?.length) {
+      filter['kitchen'] = {$in: payload.kitchen};
+    }
     if (payload?.safetyAmenities?.length) {
       filter['safetyAmenities'] = {$in: payload.safetyAmenities};
     }

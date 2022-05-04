@@ -19,6 +19,7 @@ import {RoleEnum} from '../../../enums/role.enum';
 import {NextToEnum} from '../../../enums/nexto.num';
 import {CommonAmenitiesEnum, SafetyAmenitiesEnum} from '../../../enums/amenities.enum';
 import {FacilitiesEnum} from '../../../enums/facilities.enum';
+import {KitchenEnum} from '../../../enums/kitchen.enum';
 
 export class FilterPropertiesPayload extends QueryPropertiesPayload {
   @ApiProperty({
@@ -175,6 +176,20 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
   @IsEnum(NextToEnum, {each: true})
   @IsNotEmpty()
   nextTo: NextToEnum[];
+
+  @ApiProperty({
+    description: 'includes kitchen amenities list',
+    type: [String],
+    required: false,
+    isArray: true,
+    enum: KitchenEnum,
+    enumName: 'KitchenEnum',
+  })
+  @IsOptional()
+  @IsNotEmpty()
+  @ArrayUnique()
+  @IsEnum(KitchenEnum, {each: true})
+  kitchen: KitchenEnum[];
 
   @ApiProperty({
     description: 'includes common amenities list',

@@ -22,6 +22,7 @@ import {Visit} from '../../visits/visit.schema';
 import {CategoryEnum} from '../../../enums/categoryEnum';
 import {currencyOptions} from './create-property.payload';
 import {MeasurementEnum} from '../../../enums/measurement.enum';
+import {KitchenEnum} from '../../../enums/kitchen.enum';
 
 export class PatchPropertyPayload implements IProperty {
   @ApiProperty({
@@ -65,18 +66,6 @@ export class PatchPropertyPayload implements IProperty {
   })
   @IsNumber()
   floors: number;
-
-  @ApiProperty({type: Boolean})
-  @IsBoolean()
-  kitchenBarTable: boolean;
-
-  @ApiProperty({type: Boolean})
-  @IsBoolean()
-  kitchenDualSinks: boolean;
-
-  @ApiProperty({type: Boolean})
-  @IsBoolean()
-  kitchenGas: boolean;
 
   @ApiProperty({type: Boolean})
   @IsBoolean()
@@ -177,6 +166,19 @@ export class PatchPropertyPayload implements IProperty {
   @IsEnum(NextToEnum, {each: true})
   @IsNotEmpty()
   nextTo: NextToEnum[];
+
+  @ApiProperty({
+    description: 'kitchen amenities list',
+    type: [String],
+    required: true,
+    isArray: true,
+    enum: KitchenEnum,
+    enumName: 'KitchenEnum',
+  })
+  @IsNotEmpty()
+  @ArrayUnique()
+  @IsEnum(KitchenEnum, {each: true})
+  kitchen: KitchenEnum[];
 
   @ApiProperty({
     description: 'common amenities list',

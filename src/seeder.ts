@@ -7,11 +7,11 @@ import {CategoriesSeeder} from './seeders/categories.seeder';
 import {Category, CategorySchema} from './modules/categories/category.schema';
 import {User, UserSchema} from './modules/users/schemas/user.schema';
 
+const url = 'mongodb+srv://developer:38Hn7ioL4PweEM94@cluster0.gx2mi.mongodb.net/gagotapp?retryWrites=true&w=majority';
+
 seeder({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://maxim:maxim1214@cluster0.cauco.mongodb.net/gagotdb?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(url),
     MongooseModule.forFeature([
       {name: User.name, schema: UserSchema},
       {name: Category.name, schema: CategorySchema},

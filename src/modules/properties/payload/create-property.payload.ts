@@ -21,6 +21,11 @@ import {ApiProperty} from '@nestjs/swagger';
 import * as faker from 'faker';
 import {CategoryEnum} from '../../../enums/categoryEnum';
 import {MeasurementEnum} from '../../../enums/measurement.enum';
+import {KitchenEnum} from 'src/enums/kitchen.enum';
+import {IAwsFile} from 'src/modules/files/aws-file.schema';
+import {Room} from 'src/modules/rooms/room.schema';
+import {User} from 'src/modules/users/schemas/user.schema';
+import {Visit} from 'src/modules/visits/visit.schema';
 
 export const currencyOptions = {
   require_symbol: false,
@@ -39,7 +44,7 @@ export const currencyOptions = {
   allow_space_after_digits: false,
 };
 
-export class CreatePropertyPayload implements IProperty {
+export class CreatePropertyPayload {
   @ApiProperty({
     description: 'category name mandatory',
     enum: CategoryEnum,

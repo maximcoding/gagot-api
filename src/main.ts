@@ -4,6 +4,7 @@ import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {BadRequestException, HttpStatus, ValidationPipe} from '@nestjs/common';
 import {ConfigService} from '@nestjs/config';
 import * as session from 'express-session';
+import {join} from 'path';
 
 const RedisStore = require('connect-redis')(session);
 
@@ -23,8 +24,7 @@ import {LoggingInterceptor} from './interceptors/logging.interceptor';
 import {TransformDataInterceptor} from './interceptors/transform-data.interceptor';
 import {ExcludeNullInterceptor} from './interceptors/exclude-null.interceptor';
 import {TimeoutInterceptor} from './interceptors/timeout.interceptor';
-import {ErrorsInterceptor} from './interceptors/errors.interceptor';
-import {UnauthorizedException} from '@nestjs/common/exceptions/unauthorized.exception';
+import {NestExpressApplication} from '@nestjs/platform-express';
 
 const httpsOptions = {
   key: fs.readFileSync(__dirname + '/../ssl/keys/localhost.pem', 'utf8'),
@@ -32,11 +32,12 @@ const httpsOptions = {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     bodyParser: true,
     httpsOptions: process.env.NODE_ENV === 'production' ? httpsOptions : null,
   });
+
   const configService = app.get(ConfigService);
   app.useGlobalPipes(
     new ValidationPipe({

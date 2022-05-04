@@ -15,6 +15,7 @@ import {Room} from '../rooms/room.schema';
 import {AwsFile, IAwsFile} from '../files/aws-file.schema';
 import {CategoryEnum} from '../../enums/categoryEnum';
 import {MeasurementEnum} from '../../enums/measurement.enum';
+import {KitchenEnum} from '../../enums/kitchen.enum';
 
 const date = new Date();
 const thisYear = date.getFullYear();
@@ -52,6 +53,7 @@ export interface IPropertyPreview {
 }
 
 export interface IProperty extends IPropertyPreview {
+  state: PropertyState[];
   newConstruction: boolean;
   yearBuild: number;
   description: string;
@@ -59,15 +61,12 @@ export interface IProperty extends IPropertyPreview {
   onTheLand: boolean;
   lastFloor: boolean;
   elevator: boolean;
+  kitchen: KitchenEnum[];
   amenities: CommonAmenitiesEnum[];
+  facilities: FacilitiesEnum[];
   safetyAmenities: SafetyAmenitiesEnum[];
   additionalDetails: boolean; // in case use selected
-  kitchenGas: boolean;
-  kitchenDualSinks: boolean;
-  kitchenBarTable: boolean;
   rating?: number;
-  state: PropertyState[];
-  facilities: FacilitiesEnum[];
   owner?: User; // foreign key
   visits?: Visit[];
   images360?: IAwsFile[];
@@ -172,6 +171,20 @@ export class Property implements IProperty {
   })
   elevator: boolean;
 
+  @Factory((faker) => faker.random.arrayElement(Object.values(KitchenEnum)))
+  @Prop({
+    type: [String],
+    enum: Object.values(KitchenEnum),
+  })
+  kitchen: KitchenEnum[];
+
+  @Factory((faker) => faker.random.arrayElement(Object.values(FacilitiesEnum)))
+  @Prop({
+    type: [String],
+    enum: Object.values(FacilitiesEnum),
+  })
+  facilities: FacilitiesEnum[];
+
   @Factory((faker) => faker.random.arrayElement(Object.values(CommonAmenitiesEnum)))
   @Prop({
     type: [String],
@@ -200,27 +213,6 @@ export class Property implements IProperty {
     default: true,
   })
   additionalDetails: boolean;
-
-  @Factory((faker) => faker.random.boolean())
-  @Prop({
-    type: Boolean,
-    default: false,
-  })
-  kitchenGas: boolean;
-
-  @Factory((faker) => faker.random.boolean())
-  @Prop({
-    type: Boolean,
-    default: false,
-  })
-  kitchenDualSinks: boolean;
-
-  @Factory((faker) => faker.random.boolean())
-  @Prop({
-    type: Boolean,
-    default: false,
-  })
-  kitchenBarTable: boolean;
 
   @Prop({
     type: String,
@@ -266,13 +258,6 @@ export class Property implements IProperty {
   })
   rating: number;
 
-  @Factory((faker) => faker.random.arrayElement(Object.values(FacilitiesEnum)))
-  @Prop({
-    type: [String],
-    enum: Object.values(FacilitiesEnum),
-  })
-  facilities: FacilitiesEnum[];
-
   @Factory(() => {
     const min = 1;
     const max = 5;
@@ -305,17 +290,6 @@ export class Property implements IProperty {
     type: Number,
   })
   balconies: number;
-
-  @Factory(() => {
-    const min = 0;
-    const max = 2;
-    return Math.round(Math.random() * (min - max) + min);
-  })
-  @Prop({
-    default: 0,
-    type: Number,
-  })
-  kitchens: number;
 
   @Factory(() => {
     const min = 0;

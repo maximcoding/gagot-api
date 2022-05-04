@@ -4,7 +4,11 @@ export enum CommonAmenitiesEnum {
   AirConditioning = 'AirConditioning',
   FastFiberInternet = 'FastFiberInternet',
   SmartHomeControl = 'SmartHomeControl',
-  Accessibility = 'Accessibility'
+  Accessibility = 'Accessibility',
+  SmartControl = 'SmartControl',
+  Wifi = 'Wifi',
+  Fireplace = 'Fireplace',
+  Boiler = 'Boiler',
 }
 
 export enum SafetyAmenitiesEnum {

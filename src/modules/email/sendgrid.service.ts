@@ -2,48 +2,43 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import {IUser} from '../users/interfaces/user.interface';
 import {ConfigService} from '@nestjs/config';
 import {InjectSendGrid, SendGridService} from '@ntegral/nestjs-sendgrid';
-import {ResetPassword} from '../auth/schemas/reset-pass.schema';
+import {MailerService} from '@nestjs-modules/mailer';
 
 @Injectable()
-export class EmailService {
+export class SendgridService {
   constructor(
     @InjectSendGrid() private readonly sendGridClient: SendGridService,
+    private mailerService: MailerService,
     private configService: ConfigService,
   ) {}
 
   public async sendEmailConfirmationCode(user: IUser, code: string) {
-    // template/resetPassword.handlebars
-    const msg = {
-      to: user.email,
-      from: this.configService.get('SENDGRID_EMAIL'),
-      subject: `Confirm your ${this.configService.get('APP_NAME')} email account`,
-      html: `<h1>Email Confirmation</h1>
-        <h2>Hello ${user.firstName}</h2>
-        <p>Thank you for registration. Please confirm your email by clicking on the following link:</p>
-        <a href="https://localhost:3000/api/auth/email/confirm?code=${code}"> https://gagotapp.com?/${code}</a>
-        </div>`,
-    };
     try {
-      return this.sendGridClient.send(msg);
+      return await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Confirm your ${this.configService.get('APP_NAME')} email account`,
+        template: 'email-confirmation',
+        context: {
+          code: code,
+          firstName: user.firstName,
+        },
+      });
     } catch (e) {
       throw new BadRequestException('Email sent Failed', e);
     }
   }
 
   public async sendResetToken(user: IUser, token: string) {
-    // template/resetPassword.handlebars
-    const msg = {
-      to: user.email,
-      from: this.configService.get('SENDGRID_EMAIL'),
-      subject: `Resetting your ${this.configService.get('APP_NAME')} password`,
-      html: `<h1>Resetting password</h1>
-        <h2>Hello ${user.firstName}</h2>
-        <p>To complete the password reset process, visit the following link: </p>
-        <a href="https://localhost:3000/api/auth/reset-password/confirm?token=${token}">Confirm reset password by clicking this link</a>
-        </div>`,
-    };
     try {
-      return this.sendGridClient.send(msg);
+      return await this.mailerService.sendMail({
+        to: user.email,
+        subject: `Resetting your ${this.configService.get('APP_NAME')} password`,
+        template: 'password-reset',
+        context: {
+          token: token,
+          firstName: user.firstName,
+        },
+      });
     } catch (e) {
       throw new BadRequestException('Email sent Failed', e);
     }
