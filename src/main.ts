@@ -35,7 +35,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     bodyParser: true,
-    httpsOptions: process.env.NODE_ENV === 'production' ? httpsOptions : null,
+    // httpsOptions: process.env.NODE_ENV === 'production' ? httpsOptions : null,
   });
 
   const configService = app.get(ConfigService);
