@@ -38,8 +38,6 @@ export class EnvironmentVariables {
   @IsString()
   JWT_SECRET_TOKEN_EXP: string;
   @IsString()
-  ALLOWED_ORIGINS: string;
-  @IsString()
   SECRET_COOKIE_SESSION: string;
 }
 

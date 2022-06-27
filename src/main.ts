@@ -35,7 +35,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     bodyParser: true,
-    // httpsOptions: process.env.NODE_ENV === 'production' ? httpsOptions : null,
+    httpsOptions: null,
   });
 
   const configService = app.get(ConfigService);
@@ -63,7 +63,8 @@ async function bootstrap() {
     region: configService.get('AWS_REGION'),
   });
   app.use(helmet());
-  const whitelist = configService.get('ALLOWED_ORIGINS')?.split(/\s*,\s*/) ?? '*';
+  // const whitelist = configService.get('ALLOWED_ORIGINS')?.split(/\s*,\s*/) ?? '*';
+  const whitelist = ['https://gagot-app.herokuapp.com', 'http://localhost:4200', 'http://localhost:3000'];
 
   app.enableCors({
     origin: whitelist,
