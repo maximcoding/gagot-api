@@ -65,7 +65,6 @@ async function bootstrap() {
   app.use(helmet());
   // const whitelist = configService.get('ALLOWED_ORIGINS')?.split(/\s*,\s*/) ?? '*';
   const whitelist = ['https://gagot-app.herokuapp.com', 'http://localhost:4200', 'http://localhost:3000'];
-
   app.enableCors({
     origin: whitelist,
     credentials: true,
