@@ -151,6 +151,9 @@ export class PropertiesService {
     if (payload?.publishedFromDate) {
       filter['createdAt'] = {$gte: new Date(payload.publishedFromDate).toISOString()};
     }
+    if (payload?.entryDate) {
+      filter['entryDate'] = {$gte: new Date(payload.entryDate).toISOString()};
+    }
     if (payload?.priceMin >= 0 && payload.priceMax > payload.priceMin) {
       filter['price'] = {$gte: payload.priceMin, $lte: payload.priceMax};
     }

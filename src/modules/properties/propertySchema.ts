@@ -310,6 +310,11 @@ export class Property implements IProperty {
   })
   categoryName: CategoryEnum;
 
+  @Prop({
+    type: Date,
+  })
+  entryDate: Date;
+
   @Factory((faker) => faker.random.arrayElement(Object.values(User)))
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelEnum.Users})
   owner: User;

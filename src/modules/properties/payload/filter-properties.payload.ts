@@ -164,6 +164,10 @@ export class FilterPropertiesPayload extends QueryPropertiesPayload {
   @Max(500)
   floors: number;
 
+  @ApiProperty({description: 'date'})
+  @IsDateString()
+  entryDate: Date;
+
   @ApiProperty({
     description: 'values',
     required: false,

@@ -68,10 +68,10 @@ export class AuthService {
       this.setMobileVerificationCode(newUser);
       await this.smsService.sendSMSCode(newUser.mobilePhone, newUser.mobilePhoneVerificationCode);
     }
-    // if (newUser.email) {
-    //   this.setEmailConfirmationCode(newUser);
-    //   await this.emailService.sendEmailConfirmationCode(newUser, newUser.emailConfirmationCode);
-    // }
+    if (newUser.email) {
+      this.setEmailConfirmationCode(newUser);
+      await this.emailService.sendEmailConfirmationCode(newUser, newUser.emailConfirmationCode);
+    }
     return await newUser.save();
   }
 

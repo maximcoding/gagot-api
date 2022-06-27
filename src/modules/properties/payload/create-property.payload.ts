@@ -8,6 +8,7 @@ import {
   IsArray,
   IsBoolean,
   IsCurrency,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -134,6 +135,10 @@ export class CreatePropertyPayload {
   @ApiProperty({type: [Number]})
   @IsArray()
   coordinate: number[];
+
+  @ApiProperty({description: 'date'})
+  @IsDateString()
+  entryDate: Date;
 
   @ApiProperty({description: faker.lorem.words(), default: faker.lorem.words(), required: false, type: String})
   title: string;

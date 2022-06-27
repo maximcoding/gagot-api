@@ -2,10 +2,7 @@ import * as bcrypt from 'bcrypt';
 import * as Cryptr from 'cryptr';
 
 export const hashPassword = (value: string) => {
-  if (!process.env.BCRYPT_SALT) {
-    console.log('no salt for pass');
-  }
-  return bcrypt.hashSync(value, Number(process.env.BCRYPT_SALT || 10));
+  return bcrypt.hashSync(value, Number('somesp!cys@lt' || 10));
 };
 
 export const encryptText = (value: string, secretToken) => {

@@ -8,6 +8,7 @@ import {
   IsArray,
   IsBoolean,
   IsCurrency,
+  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -78,6 +79,10 @@ export class PatchPropertyPayload implements IProperty {
   @ApiProperty({type: Boolean})
   @IsBoolean()
   onTheLand: boolean;
+
+  @ApiProperty({description: 'date'})
+  @IsDateString()
+  entryDate: Date;
 
   @ApiProperty({
     description: 'price with format 9999.999.99',
