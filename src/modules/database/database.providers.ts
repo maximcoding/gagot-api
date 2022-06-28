@@ -9,7 +9,7 @@ export const databaseProviders = [
   {
     provide: DATABASE_PROVIDER,
     useFactory: (service: ConfigService<EnvironmentVariables>): Promise<typeof mongoose> => {
-      const mongoUri = service.get<string>('MONGO_DB_URI');
+      const mongoUri = process.env.MONGO_DB_URI;
       mongoose.connection.on('connected', () => {
         console.log(chalk.greenBright('mongoose connected %s'), mongoUri);
       });
