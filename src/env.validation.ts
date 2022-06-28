@@ -13,32 +13,6 @@ export class EnvironmentVariables {
   NODE_ENV: Environment;
   @IsNumber()
   PORT: number;
-  @IsString()
-  HOST: string;
-  @IsString()
-  MONGO_DB_URI: string;
-  @IsString()
-  TWILIO_ACCOUNT_SID: string;
-  @IsString()
-  TWILIO_AUTH_TOKEN: string;
-  @IsString()
-  TWILIO_PHONE_NUMBER: string;
-  @IsString()
-  SENDGRID_API_KEY: string;
-  @IsString()
-  SENDGRID_EMAIL: string;
-  @IsString()
-  APP_NAME: string;
-  @IsNumber()
-  TROTTLER_TTL: number;
-  @IsNumber()
-  TROTTLER_LIMIT: number;
-  @IsString()
-  JWT_SECRET_TOKEN: string;
-  @IsString()
-  JWT_SECRET_TOKEN_EXP: string;
-  @IsString()
-  SECRET_COOKIE_SESSION: string;
 }
 
 export function validate(config: Record<string, unknown>) {
