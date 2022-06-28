@@ -1,5 +1,5 @@
 {
-  "name": "nest-server",
+  "name": "gagotapp-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -7,11 +7,13 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "npx tsc -p tsconfig.build.json\n",
+    "heroku-prebuild": "rm -rf dist node_modules redis-data data",
+    "heroku-postbuild": "npm install && npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "dev": "export NODE_ENV=development && nest start --watch",
-    "dev:windows": "set NODE_ENV=development && nest start --watch",
+    "start": "export NODE_ENV=production && node dist/main",
+    "start:dev": "export NODE_ENV=development && nest start --watch",
+    "start:dev:windows": "set NODE_ENV=development && nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "export NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -143,6 +145,7 @@
     "testEnvironment": "node"
   },
   "engines": {
+    "npm": "6.x",
     "node": "14.x"
   }
 }

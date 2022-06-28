@@ -102,8 +102,8 @@ async function bootstrap() {
   app.use(compression());
   app.setGlobalPrefix('/api');
   swaggerSetup(app);
-  const HOST = configService.get('HOST') || '0.0.0.0';
-  const PORT = configService.get('PORT') || 3000;
+  const HOST = process.env.HOST || '0.0.0.0';
+  const PORT = process.env.PORT || 3000;
   console.log(`Explore api on http://localhost:${PORT}/api`);
   await app.listen(PORT);
 }
