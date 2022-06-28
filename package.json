@@ -145,7 +145,6 @@
     "testEnvironment": "node"
   },
   "engines": {
-    "npm": "6.x",
-    "node": "14.x"
+    "node": "14.15.1"
   }
 }
