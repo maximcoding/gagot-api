@@ -104,8 +104,9 @@ async function bootstrap() {
   swaggerSetup(app);
   const HOST = process.env.HOST || '0.0.0.0';
   const PORT = process.env.PORT || 3000;
-  console.log(`Explore api on http://localhost:${PORT}/api`);
-  await app.listen(PORT);
+  const server = app.listen(process.env.PORT || 3000, () => {
+    console.log(`Explore api on http://localhost:${PORT}/api`);
+  });
 }
 
 function swaggerSetup(app) {
