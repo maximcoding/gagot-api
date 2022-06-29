@@ -23,7 +23,7 @@ import {MongoCacheModule} from '../cache/mongo-cache.module';
     EmailModule,
     DatabaseModule,
     MongoCacheModule,
-    RedisCacheModule,
+    // RedisCacheModule,
     PassportModule.register({session: true, defaultStrategy: 'jwt'}), // oidc
     JwtModule.registerAsync({
       imports: [ConfigModule],
