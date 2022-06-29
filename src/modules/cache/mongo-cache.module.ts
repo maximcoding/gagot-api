@@ -6,14 +6,6 @@ import * as mongoStore from 'cache-manager-mongoose';
 import * as mongoose from 'mongoose';
 import {ModelEnum} from '../../enums/model.enum';
 
-// const schema = new mongoose.Schema(
-//   { _id: String, val: mongoose.Schema.Types.Mixed, exp: Date },
-//   { collection: 'cacheManager', versionKey: false }
-// );
-// schema.index({ exp: 1 }, { expireAfterSeconds: 0 });
-// schema.index({ foo: 1 });
-// const model = mongoose.model('Cache', schema);
-
 @Module({
   imports: [
     CacheModule.registerAsync({
