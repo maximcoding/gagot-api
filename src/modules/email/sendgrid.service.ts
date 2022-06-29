@@ -16,7 +16,7 @@ export class SendgridService {
     try {
       return await this.mailerService.sendMail({
         to: user.email,
-        subject: `Confirm your ${this.configService.get('APP_NAME')} email account`,
+        subject: `Confirm your ${process.env.APP_NAME} email account`,
         template: 'email-confirmation',
         context: {
           code: code,
@@ -32,7 +32,7 @@ export class SendgridService {
     try {
       return await this.mailerService.sendMail({
         to: user.email,
-        subject: `Resetting your ${this.configService.get('APP_NAME')} password`,
+        subject: `Resetting your ${process.env.APP_NAME} password`,
         template: 'password-reset',
         context: {
           token: token,
@@ -49,7 +49,7 @@ export class SendgridService {
     const msg = {
       to: user.email,
       from: this.configService.get('SENDGRID_EMAIL'),
-      subject: `Password Reset ${this.configService.get('APP_NAME')} Successfully`,
+      subject: `Password Reset ${process.env.APP_NAME} Successfully`,
       html: `<h1>Password Reset Done</h1>
         <h2>Hello ${user.firstName}</h2>
         <p>Your password reset successfully completed</p>

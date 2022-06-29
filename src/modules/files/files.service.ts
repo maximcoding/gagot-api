@@ -47,7 +47,7 @@ export class FilesService {
     const s3 = new S3();
     const uploadResult = await s3
       .upload({
-        Bucket: this.configService.get('AWS_PUBLIC_BUCKET_NAME'),
+        Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
         Body: file.buffer,
         Key: `${uuid()}-${file.originalname}`,
       })
@@ -69,7 +69,7 @@ export class FilesService {
     const s3 = new S3();
     await s3
       .deleteObject({
-        Bucket: this.configService.get('AWS_PUBLIC_BUCKET_NAME'),
+        Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
         Key: found.key,
       })
       .promise();
@@ -83,7 +83,7 @@ export class FilesService {
         const s3 = new S3();
         await s3
           .deleteObject({
-            Bucket: this.configService.get('AWS_PUBLIC_BUCKET_NAME'),
+            Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
             Key: fileToDelete.key,
           })
           .promise();
@@ -128,7 +128,7 @@ export class FilesService {
       const s3 = new S3();
       await s3
         .deleteObject({
-          Bucket: this.configService.get('AWS_PUBLIC_BUCKET_NAME'),
+          Bucket: process.env.AWS_PUBLIC_BUCKET_NAME,
           Key: file.key,
         })
         .promise();

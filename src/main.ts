@@ -59,9 +59,9 @@ async function bootstrap() {
 
   app.useGlobalFilters(new MongoExceptionFilter(), new AllExceptionsFilter(httpAdapter));
   config.update({
-    accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
-    secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),
-    region: configService.get('AWS_REGION'),
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
   });
   app.use(helmet());
   // const whitelist = configService.get('ALLOWED_ORIGINS')?.split(/\s*,\s*/) ?? '*';
@@ -88,7 +88,7 @@ async function bootstrap() {
     autoRemoveInterval: 10080,
     touchAfter: 1,
   });
-  app.use(cookieParser(configService.get('SECRET_COOKIE_SESSION')));
+  app.use(cookieParser(process.env.SECRET_COOKIE_SESSION));
   app.use(
     session({
       store: mongoStore,
@@ -115,8 +115,8 @@ async function bootstrap() {
   swaggerSetup(app);
   const HOST = process.env.HOST || '0.0.0.0';
   const PORT = process.env.PORT || 8080;
-  const server = app.listen(process.env.PORT || 8080, () => {
-    console.log(`Explore api on http://localhost:${PORT}/api`);
+  const server = app.listen(PORT, () => {
+    console.log(`Explore api on http://${HOST}:${PORT}/api`);
   });
 }
 

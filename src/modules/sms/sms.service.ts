@@ -11,7 +11,7 @@ export class SmsService {
     try {
       return await this.twilioClient.messages.create({
         body: `הקוד האימות הוא ${code}`,
-        from: this.configService.get('TWILIO_PHONE_NUMBER'),
+        from: process.env.TWILIO_PHONE_NUMBER,
         to: mobilePhone,
       });
     } catch (e) {

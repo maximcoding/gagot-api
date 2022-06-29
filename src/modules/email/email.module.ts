@@ -32,15 +32,15 @@ const helpers = {
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
         transport: {
-          host: config.get('EMAIL_HOST'),
+          host: process.env.EMAIL_HOST,
           secure: false,
           auth: {
-            user: config.get('EMAIL_USER'),
-            pass: config.get('EMAIL_PASSWORD'),
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
           },
         },
         defaults: {
-          from: config.get('SENDGRID_EMAIL'),
+          from: process.env.SENDGRID_EMAIL,
         },
         template: {
           dir: process.cwd() + '/templates/',
@@ -63,7 +63,7 @@ const helpers = {
     SendGridModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        apiKey: config.get('SENDGRID_API_KEY'),
+        apiKey: process.env.SENDGRID_API_KEY,
       }),
       inject: [ConfigService],
     }),

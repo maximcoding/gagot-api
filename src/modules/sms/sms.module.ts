@@ -7,9 +7,9 @@ import {SmsService} from './sms.service';
   imports: [
     TwilioModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (cfg: ConfigService) => ({
-        accountSid: cfg.get('TWILIO_ACCOUNT_SID'),
-        authToken: cfg.get('TWILIO_AUTH_TOKEN'),
+      useFactory: async () => ({
+        accountSid: process.env.TWILIO_ACCOUNT_SID,
+        authToken: process.env.TWILIO_AUTH_TOKEN,
       }),
       inject: [ConfigService],
     }),
