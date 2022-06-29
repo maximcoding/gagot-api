@@ -1,24 +1,8 @@
 import {HttpAdapterHost, NestFactory} from '@nestjs/core';
 import {AppModule} from './modules/app/app.module';
 import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
-import {BadRequestException, HttpStatus, ValidationPipe} from '@nestjs/common';
+import {HttpStatus, ValidationPipe} from '@nestjs/common';
 import {ConfigService} from '@nestjs/config';
-import * as session from 'express-session';
-import {join} from 'path';
-
-const RedisStore = require('connect-redis')(session);
-const MongoStore = require('connect-mongo');
-
-import * as cookieParser from 'cookie-parser';
-import {config} from 'aws-sdk';
-import * as csurf from 'csurf';
-import * as helmet from 'helmet';
-import * as passport from 'passport';
-
-const compression = require('compression');
-const flash = require('connect-flash');
-
-import fs = require('fs');
 import {MongoExceptionFilter} from './filters/mongo-exception.filter';
 import {AllExceptionsFilter} from './filters/all-exceptions.filter';
 import {LoggingInterceptor} from './interceptors/logging.interceptor';
@@ -26,6 +10,19 @@ import {TransformDataInterceptor} from './interceptors/transform-data.intercepto
 import {ExcludeNullInterceptor} from './interceptors/exclude-null.interceptor';
 import {TimeoutInterceptor} from './interceptors/timeout.interceptor';
 import {NestExpressApplication} from '@nestjs/platform-express';
+
+// const RedisStore = require('connect-redis')(session);
+const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+
+import * as session from 'express-session';
+import fs = require('fs');
+import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
+import {config} from 'aws-sdk';
+import * as csurf from 'csurf';
+import * as helmet from 'helmet';
+import * as passport from 'passport';
 
 const httpsOptions = {
   key: fs.readFileSync(__dirname + '/../ssl/keys/localhost.pem', 'utf8'),
