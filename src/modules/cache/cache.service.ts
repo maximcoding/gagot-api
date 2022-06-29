@@ -1,7 +1,7 @@
 import {CACHE_MANAGER, Inject, Injectable} from '@nestjs/common';
 import {Cache} from 'cache-manager';
 
-export enum RedisKeys {
+export enum CacheKeys {
   white_list = 'white_list_',
 }
 
@@ -25,20 +25,20 @@ export class CacheService {
 
   public async whiteListJWTToken(userId: string, jwtToken: string) {
     await this.blackListJWTToken(userId);
-    const usersCache = await this.get(RedisKeys.white_list + userId);
+    const usersCache = await this.get(CacheKeys.white_list + userId);
     const obj = usersCache ? usersCache : {};
     obj[jwtToken] = true;
-    await this.set(RedisKeys.white_list + userId, obj, 604800);
+    await this.set(CacheKeys.white_list + userId, obj, 604800);
   }
 
   public async blackListJWTToken(userId: string) {
-    const usersCache = await this.get(RedisKeys.white_list + userId);
+    const usersCache = await this.get(CacheKeys.white_list + userId);
     const obj = {};
     if (usersCache) {
       Object.keys(usersCache).forEach((token) => {
         obj[token] = false;
       });
     }
-    await this.set(RedisKeys.white_list + userId, obj);
+    await this.set(CacheKeys.white_list + userId, obj);
   }
 }
