@@ -13,6 +13,7 @@ import {authProviders} from './auth.providers';
 import {SmsModule} from '../sms/sms.module';
 import {EmailModule} from '../email/email.module';
 import {RedisCacheModule} from '../cache/redis-cache.module';
+import {MongoCacheModule} from '../cache/mongo-cache.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import {RedisCacheModule} from '../cache/redis-cache.module';
     SmsModule,
     EmailModule,
     DatabaseModule,
+    MongoCacheModule,
     RedisCacheModule,
     PassportModule.register({session: true, defaultStrategy: 'jwt'}), // oidc
     JwtModule.registerAsync({

@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import {join} from 'path';
 
 const RedisStore = require('connect-redis')(session);
+const MongoStore = require('connect-mongo');
 
 import * as cookieParser from 'cookie-parser';
 import {config} from 'aws-sdk';
@@ -73,19 +74,29 @@ async function bootstrap() {
     exposedHeaders: ['Authorization'],
   });
   // app.use(csurf({cookie: true}));
-  const redisURL = `redis://:${process.env.REDIS_PASS}@localhost:${process.env.REDIS_PORT_OUT}`;
-  const cookieMaxAge = 1000 * 60 * 60 * 24 * 7;
-  const redisStore = new RedisStore({client: require('redis').createClient(redisURL), ttl: cookieMaxAge});
+  // const redisURL = `redis://:${process.env.REDIS_PASS}@localhost:${process.env.REDIS_PORT_OUT}`;
+  // const cookieMaxAge = 1000 * 60 * 60 * 24 * 7;
+  // const redisStore = new RedisStore({
+  //   client: require('redis').createClient(redisURL),
+  //   ttl: cookieMaxAge,
+  // });
+  const mongoStore = MongoStore.create({
+    mongoUrl: process.env.MONGO_DB_URI,
+    useUnifiedTopology: true,
+    autoRemove: 'interval',
+    ttl: 604800,
+    autoRemoveInterval: 10080,
+    touchAfter: 1,
+  });
   app.use(cookieParser(configService.get('SECRET_COOKIE_SESSION')));
   app.use(
     session({
-      secret: configService.get('SECRET_COOKIE_SESSION'),
-      resave: false,
+      store: mongoStore,
       saveUninitialized: false,
-      rolling: true, // keep session alive
-      store: redisStore,
+      secret: process.env.SECRET_COOKIE_SESSION,
+      resave: false,
       cookie: {
-        maxAge: cookieMaxAge,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
         sameSite: 'none', // 'strict'
         signed: true,

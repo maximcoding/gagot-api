@@ -15,6 +15,7 @@ import {APP_INTERCEPTOR} from '@nestjs/core';
 import {LoggingInterceptor} from '../../interceptors/logging.interceptor';
 import {RedisCacheModule} from '../cache/redis-cache.module';
 import {SeederModule} from 'nestjs-seeder/dist/seeder/seeder.module';
+import {MongoCacheModule} from '../cache/mongo-cache.module';
 
 @Module({
   controllers: [AppController],
@@ -33,6 +34,7 @@ import {SeederModule} from 'nestjs-seeder/dist/seeder/seeder.module';
     FilesModule,
     RedisCacheModule,
     SeederModule,
+    MongoCacheModule,
     ThrottlerModule.forRoot({
       ttl: +process.env.TROTTLER_TTL,
       limit: +process.env.TROTTLER_LIMIT,

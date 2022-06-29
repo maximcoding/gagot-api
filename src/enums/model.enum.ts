@@ -12,4 +12,5 @@ export enum ModelEnum {
   ForgotPassword = 'forgotPassword',
   ResetPassword = 'resetPassword',
   Files = 'files',
+  Cache = 'cache',
 }
