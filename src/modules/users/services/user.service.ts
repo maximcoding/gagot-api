@@ -18,7 +18,7 @@ import {RoleEnum} from '../../../enums/role.enum';
 import {ResetPasswordPayload} from '../payloads/reset-password.payload';
 import {IUser} from '../interfaces/user.interface';
 import {UserStatusEnum} from '../../../enums/user-status.enum';
-import {LOCAL_STRATEGY_FIELD} from '../../auth/strategies/local.strategy';
+import {PHONE_LOCAL_STRATEGY_FIELD} from '../../auth/strategies/local.strategy';
 import {FilesService} from '../../files/files.service';
 import {AppFileEnum, IAwsFile, ImageFormat} from '../../files/aws-file.schema';
 import {ModelEnum} from '../../../enums/model.enum';
@@ -37,7 +37,7 @@ export class UserService {
   public async create(payload: RegisterPayload): Promise<UserDocument> {
     // await this.userModel.deleteMany().exec();
     const user = await this.userModel
-      .findOne({$or: [{mobilePhone: payload[LOCAL_STRATEGY_FIELD]}, {email: payload.email}]})
+      .findOne({$or: [{mobilePhone: payload[PHONE_LOCAL_STRATEGY_FIELD]}, {email: payload.email}]})
       .exec();
     if (user) {
       throw new NotAcceptableException('Mobile Phone Number or Email Already Exist');

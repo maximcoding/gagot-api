@@ -35,7 +35,7 @@ import {RESET_PASS} from './auth.providers';
 import {SmsService} from '../sms/sms.service';
 import {SendgridService} from '../email/sendgrid.service';
 import {UserDocument} from '../users/schemas/user.schema';
-import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
+import {PHONE_LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
 import {CacheService} from '../cache/cache.service';
 import {UserStatusEnum} from '../../enums/user-status.enum';
 import {comparePass, create6DigitsCode} from '../../helpers/password-hash';
@@ -64,7 +64,7 @@ export class AuthService {
   public async register(payload: RegisterPayload): Promise<IUser> {
     this.passwordAndConfirmMatch(payload.password, payload.confirmPassword);
     const newUser = await this.userService.create(payload);
-    if (newUser[LOCAL_STRATEGY_FIELD]) {
+    if (newUser[PHONE_LOCAL_STRATEGY_FIELD]) {
       this.setMobileVerificationCode(newUser);
       await this.smsService.sendSMSCode(newUser.mobilePhone, newUser.mobilePhoneVerificationCode);
     }
@@ -111,28 +111,27 @@ export class AuthService {
 
   // working
   // working
-  public async loginWithPhone(mobilePhone: string, password: string): Promise<any> {
+  public async loginWithPhone(mobilePhone: string): Promise<any> {
     const user = await this.userService.findVerifiedUserByPhone(mobilePhone);
-    await this.checkPassword(password, user);
     const jwtToken = this.createSignToken(user._id);
     await this.addToWhiteListToken(user._id, jwtToken);
     return {token: jwtToken};
   }
 
   // working
-  public async loginWithEmail(req: Request, payload: LoginWithEmailPayload): Promise<{user: IUser; token: string}> {
+  public async loginWithEmail(payload: LoginWithEmailPayload): Promise<{user: IUser; token: string}> {
     const user = await this.userService.findVerifiedUserByEmail(payload.email);
     if (!user) {
       throw new NotFoundException(`There isn't any user with mobile: ${payload.email}`);
     }
-    await this.checkPassword(payload.password, user);
+    // await this.checkPassword(payload.password, user);
     const jwtToken = this.createSignToken(user._id);
     await this.addToWhiteListToken(user._id, jwtToken);
     return {token: jwtToken, user};
   }
 
   public async resetPasswordRequest(payload: ResetPasswordPayload): Promise<void> {
-    const user = await this.userService.findVerifiedUserByPhone(payload[LOCAL_STRATEGY_FIELD]);
+    const user = await this.userService.findVerifiedUserByPhone(payload[PHONE_LOCAL_STRATEGY_FIELD]);
     await this.checkPassword(payload.password, user);
     await this.passwordAndNewMatch(payload.password, payload.newPassword);
     await this.resetLoginAttempts(user);

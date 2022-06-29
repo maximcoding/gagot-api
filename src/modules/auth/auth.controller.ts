@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Headers, HttpCode, HttpStatus, Post, Query, Req, Res, UseGuards} from '@nestjs/common';
 import {ApiBearerAuth, ApiCookieAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {Request, Response} from 'express';
-import {LoginWithPhonePayload} from '../users/payloads/login.payloads';
+import {LoginWithEmailPayload, LoginWithPhonePayload} from '../users/payloads/login.payloads';
 import {ConfirmEmailPayload} from '../users/payloads/confirm-email.payload';
 import {VerifyMobilePhonePayload} from '../users/payloads/verify-phone.payload';
 import {ResetPasswordPayload} from '../users/payloads/reset-password.payload';
@@ -13,7 +13,7 @@ import {
 } from '../users/payloads/register.payloads';
 import {JwtAuthGuard} from './guards/jwt-auth.guard';
 import {LocalAuthGuard} from './guards/local-auth.guard';
-import {LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
+import {PHONE_LOCAL_STRATEGY_FIELD} from './strategies/local.strategy';
 import {AuthUser} from '../users/user.decorator';
 import {IUser} from '../users/interfaces/user.interface';
 import {SessionAuthGuard} from './guards/session.guard';
@@ -85,7 +85,7 @@ export class AuthController {
     @Headers() headers: Headers,
     @Body() payload: LoginWithPhonePayload,
   ) {
-    const token = await this.authService.loginWithPhone(payload[LOCAL_STRATEGY_FIELD], payload.password);
+    const token = await this.authService.loginWithPhone(payload[PHONE_LOCAL_STRATEGY_FIELD]);
     res.header('Authorization', `Bearer ${token}`);
     res.cookie('token', token, {
       httpOnly: true,
@@ -98,6 +98,30 @@ export class AuthController {
     });
     return res;
   }
+
+  // @Post('email/login')
+  // @UseGuards(LocalAuthGuard)
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOperation({description: 'Email sign in to user account'})
+  // async loginEmail(
+  //   @Req() req: Request,
+  //   @Res() res: Response,
+  //   @Headers() headers: Headers,
+  //   @Body() payload: LoginWithEmailPayload,
+  // ) {
+  //   const token = await this.authService.loginWithEmail(payload);
+  //   res.header('Authorization', `Bearer ${token}`);
+  //   res.cookie('token', token, {
+  //     httpOnly: true,
+  //     signed: true,
+  //     sameSite: 'strict',
+  //     secure: process.env.NODE_ENV === 'production',
+  //   });
+  //   res.send({
+  //     accessToken: token,
+  //   });
+  //   return res;
+  // }
 
   // @Get('email/confirm/:code')
   // @ApiParam({ name: 'code', type: String, description: 'confirmation code' }

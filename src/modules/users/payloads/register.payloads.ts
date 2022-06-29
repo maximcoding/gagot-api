@@ -11,7 +11,7 @@ import {
 } from 'class-validator';
 import {ApiModelProperty} from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 import {ApiProperty} from '@nestjs/swagger';
-import {LoginPayload} from './login.payloads';
+import {mediumRegex} from './login.payloads';
 import {Exclude} from 'class-transformer';
 
 class FulNamePayload {
@@ -30,7 +30,7 @@ class FulNamePayload {
   lastName: string;
 }
 
-export class RegisterPayload extends LoginPayload {
+export class RegisterPayload {
   @ApiProperty({required: true, minimum: 8, maximum: 1024})
   @ApiModelProperty({
     example: 'test123123',
@@ -41,6 +41,24 @@ export class RegisterPayload extends LoginPayload {
     required: true,
   })
   @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  @Matches(mediumRegex)
+  @MinLength(8)
+  @MaxLength(1024)
+  password: string;
+
+  @ApiProperty({required: true, minimum: 8, maximum: 1024})
+  @ApiModelProperty({
+    example: 'test123123',
+    description: 'The password of the User',
+    format: 'string',
+    minLength: 8,
+    maxLength: 1024,
+    required: true,
+  })
+  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MinLength(8)
   @MaxLength(1024)
@@ -54,6 +72,7 @@ export class RegisterPayload extends LoginPayload {
   @IsOptional()
   @ApiProperty({required: false})
   @IsString()
+  @IsOptional()
   @Matches(/^[a-zA-Z ]+$/)
   @MinLength(2)
   @MaxLength(50)
@@ -65,6 +84,7 @@ export class RegisterPayload extends LoginPayload {
     description: 'The last name',
     format: 'string',
   })
+  @IsOptional()
   @IsString()
   @Matches(/^[a-zA-Z ]+$/)
   @MinLength(2)

@@ -112,7 +112,6 @@ export class User implements IUser {
     type: String,
     minlength: 5,
     maxlength: 1024,
-    required: [true, 'PASSWORD_IS_BLANK'],
   })
   @Exclude()
   password: string;
