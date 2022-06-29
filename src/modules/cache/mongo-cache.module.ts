@@ -21,7 +21,10 @@ import {ModelEnum} from '../../enums/model.enum';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         store: mongoStore,
-        connection: mongoose.createConnection(process.env.MONGO_DB_URI),
+        connection: mongoose.createConnection(
+          process.env.MONGO_DB_URI ||
+            'mongodb+srv://developer:38Hn7ioL4PweEM94@cluster0.gx2mi.mongodb.net/gagotapp?retryWrites=true&w=majority',
+        ),
         mongoose: mongoose,
         modelName: ModelEnum.Cache,
         modelOptions: {
