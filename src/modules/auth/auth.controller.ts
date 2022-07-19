@@ -76,7 +76,7 @@ export class AuthController {
   }
 
   @Post('mobile/login')
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({description: 'Mobile sign in to user account'})
   async loginMobile(

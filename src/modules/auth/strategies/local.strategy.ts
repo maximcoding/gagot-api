@@ -11,7 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private moduleRef: ModuleRef) {
     super({
       usernameField: PHONE_LOCAL_STRATEGY_FIELD,
-      passReqToCallback: true,
+      passReqToCallback: false,
     });
   }
 
